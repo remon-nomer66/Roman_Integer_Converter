@@ -15,6 +15,13 @@ def roman_to_int(roman_numeral):
         # 無効な文字が含まれていたらエラーを出す
         if char not in roman_values:
             raise ValueError(f"無効なローマ数字です: {char}")
+        
+        # 無効な組み合わせのチェック
+        invalid_combination = ['IIII', 'VV', 'XXXX', 'LL', 'CCCC', 'DD', 'MMMM', 'IL', 'IC', 'ID', 'IM', 'VX', 'VL', 'VC', 'VD', 'VM', 'XD', 'XM', 'LC', 'LD', 'LM', 'DM']
+        for combination in invalid_combination:
+            if combination in roman_numeral:
+                raise ValueError(f"このローマ数字は有効ではありません: {combination}")
+            
         # 現在の文字の値を取得
         value = roman_values[char]
         # 現在の文字の値が前の文字の値以上ならば足し合わせる
