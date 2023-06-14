@@ -1,51 +1,42 @@
 import tkinter as tk
 from tkinter import messagebox
+import re
 
-# ローマ数字を整数に変換する関数
-def roman_to_int(roman_numeral):
-    # ローマ数字の各文字に対応する整数の辞書
-    roman_values = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+def validate_roman(roman):
+    pattern = '^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$'
+    return bool(re.match(pattern, roman))
 
-    #初期化
-    total = 0
-    prev_value = 0
+def main(roman):
+    num = 0
+    r_n = {'M': 1000,'D': 500,'C': 100,'L': 50,'X': 10,'V': 5,'I': 1}
+    pre = 0
+    
+    # validate roman numeral
+    if not validate_roman(roman):
+        raise Exception('Invalid Roman numeral: {}'.format(roman))
 
-    # ローマ数字を後ろから見ていく
-    for char in reversed(roman_numeral):
-        # 無効な文字が含まれていたらエラーを出す
-        if char not in roman_values:
-            raise ValueError(f"無効なローマ数字です: {char}")
-        
-        # 無効な組み合わせのチェック
-        invalid_combination = ['IIII', 'VV', 'XXXX', 'LL', 'CCCC', 'DD', 'MMMM', 'IL', 'IC', 'ID', 'IM', 'VX', 'VL', 'VC', 'VD', 'VM', 'XD', 'XM', 'LC', 'LD', 'LM', 'DM']
-        for combination in invalid_combination:
-            if combination in roman_numeral:
-                raise ValueError(f"このローマ数字は有効ではありません: {combination}")
-            
-        # 現在の文字の値を取得
-        value = roman_values[char]
-        # 現在の文字の値が前の文字の値以上ならば足し合わせる
-        if value >= prev_value:
-            total += value
-        # 現在の文字の値が前の文字の値より小さければ引き算を行う
+    for i in range(len(roman) - 1, -1, -1):
+        c = roman[i]
+        if not c in r_n:
+            raise Exception('Invalid character in Roman numeral: {}'.format(c))
+        n = r_n[c]
+        if n >= pre:
+            num += n
+            pre = n
         else:
-            total -= value
-        # 現在の文字の値をprev_valueに代入
-        prev_value = value
-
-    # 結果を返す
-    return total
+            if (pre == 10 and n == 1 and c != "I") or (pre == 100 and n == 10 and c != "X") or (pre == 1000 and n == 100 and c != "C"):
+                raise Exception('Invalid order in Roman numeral: {}'.format(roman))
+            num -= n
+    return num
 
 # 「変換」ボタンをクリックしたときの動作
 def convert_roman_to_int():
-    # ローマ数字を整数に変換して結果を表示
+    roman = entry.get()
     try:
-        roman_numeral = entry.get()
-        number = roman_to_int(roman_numeral)
-        result_label['text'] = f"結果: {number}"
-    # エラーが発生したらメッセージボックスを表示
-    except ValueError:
-        messagebox.showerror("エラー", "正しいローマ数字を入力してください。I, V, X, L, C, D, M の文字を使用します。")
+        num = main(roman)
+        result_label["text"] = "結果: " + str(num)
+    except Exception as e:
+        messagebox.showerror("エラー", e)
 
 # GUIの生成
 root = tk.Tk()
