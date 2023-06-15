@@ -57,9 +57,17 @@ root.title("Roman Numeral → Integer Number")
 root.geometry("300x600")
 
 # ロゴ
-logo = tk.PhotoImage(file="logo.png")
-logo_label = tk.Label(root, image=logo)
-logo_label.pack()
+# logo = tk.PhotoImage(file="logo.png")
+# logo_label = tk.Label(root, image=logo)
+# logo_label.pack()
+
+# ロゴラベル
+logo_label = tk.Label(root, text="ROMAN\nNUMERAL\nCONVERTER", 
+                      font=("Helvetica", 16, "bold"),
+                      justify='center',
+                      borderwidth=2, 
+                      relief="solid")
+logo_label.pack(padx=10, pady=10)
 
 # 説明ラベル
 description_label = tk.Label(root, text="ローマ数字を入力してください。")
