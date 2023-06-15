@@ -1,28 +1,40 @@
+#ライブラリーのインポート
 import tkinter as tk
 from tkinter import messagebox
 import re
 
+# ローマ数字の入力が正しいかどうかをチェック
 def validate_roman(roman):
+    # ローマ数字の正規表現
     pattern = '^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$'
+    # ローマ数字の正規表現にマッチするかどうかをチェック
     return bool(re.match(pattern, roman))
 
+# ローマ数字を整数に変換
 def main(roman):
+    # 変換結果を格納する変数
     num = 0
+    # ローマ数字の文字と整数の対応表
     r_n = {'M': 1000,'D': 500,'C': 100,'L': 50,'X': 10,'V': 5,'I': 1}
+    # 前の文字の整数
     pre = 0
     
-    # validate roman numeral
+    # ローマ数字の入力が正しいかどうかをチェック
     if not validate_roman(roman):
-        raise Exception('Invalid Roman numeral: {}'.format(roman))
+        raise Exception('ローマ数字の表記ルールをご確認ください: {}'.format(roman))
 
+    # ローマ数字を整数に変換
     for i in range(len(roman) - 1, -1, -1):
         c = roman[i]
+        # ローマ数字に使われていない文字が含まれていないかチェック
         if not c in r_n:
             raise Exception('Invalid character in Roman numeral: {}'.format(c))
+        # ローマ数字の文字を整数に変換
         n = r_n[c]
         if n >= pre:
             num += n
             pre = n
+        # ローマ数字の文字の並びが正しいかどうかをチェック
         else:
             if (pre == 10 and n == 1 and c != "I") or (pre == 100 and n == 10 and c != "X") or (pre == 1000 and n == 100 and c != "C"):
                 raise Exception('Invalid order in Roman numeral: {}'.format(roman))
@@ -32,6 +44,7 @@ def main(roman):
 # 「変換」ボタンをクリックしたときの動作
 def convert_roman_to_int():
     roman = entry.get()
+    roman = roman.replace(" ", "") # 入力から空白を除去
     try:
         num = main(roman)
         result_label["text"] = "結果: " + str(num)
