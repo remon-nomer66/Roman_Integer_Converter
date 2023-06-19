@@ -1,6 +1,7 @@
 #ライブラリーのインポート
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 import re
 
 # ローマ数字の入力が正しいかどうかをチェック
@@ -54,12 +55,8 @@ def convert_roman_to_int():
 # GUIの生成
 root = tk.Tk()
 root.title("Roman Numeral → Integer Number")
-root.geometry("300x600")
-
-# ロゴ
-# logo = tk.PhotoImage(file="logo.png")
-# logo_label = tk.Label(root, image=logo)
-# logo_label.pack()
+root.geometry("350x700")
+root.minsize(350, 700)
 
 # ロゴラベル
 logo_label = tk.Label(root, text="ROMAN\nNUMERAL\nCONVERTER", 
@@ -96,19 +93,22 @@ separate_label = tk.Label(root, text="------------------------")
 separate_label.pack()
 
 # 簡易的なローマ数字と整数の対応表
-table_label = tk.Label(root, text="ローマ数字と整数の対応表")
+table_label = tk.Label(root, text="簡易的なローマ数字と整数の対応表")
 table_label.pack()
 
-# ローマ数字と整数の対応表を表示
-table = tk.Text(root, height=10, width=20)
-table.insert(tk.END, "I: 1\n")
-table.insert(tk.END, "V: 5\n")
-table.insert(tk.END, "X: 10\n")
-table.insert(tk.END, "L: 50\n")
-table.insert(tk.END, "C: 100\n")
-table.insert(tk.END, "D: 500\n")
-table.insert(tk.END, "M: 1000\n")
-table.pack()
+# 簡易的なローマ数字と整数の対応表を表示
+
+tree = ttk.Treeview(root, columns=("roman", "number"), show="headings")
+tree.column("roman", width=100)
+tree.column("number", width=100)
+tree.heading("roman", text="ローマ数字")
+tree.heading("number", text="数字")
+
+# データの追加
+data = [("I", "1"), ("V", "5"), ("X", "10"), ("L", "50"), ("C", "100"), ("D", "500"), ("M", "1000")]
+for i in data:
+    tree.insert("", "end", values=i)
+tree.pack()
 
 #区分け
 separate_label = tk.Label(root, text="------------------------")
@@ -118,13 +118,16 @@ separate_label.pack()
 rule_label = tk.Label(root, text="ローマ数字のルール")
 rule_label.pack()
 
-# ローマ数字のルールを表示
-rule = tk.Text(root, height=10, width=60)
-rule.insert(tk.END, "1. I, X, C, M は3つまで並べることができる。\n")
-rule.insert(tk.END, "2. V, L, D は1つ前の文字の右側にしか置くことができない。\n")
-rule.insert(tk.END, "3. I は V, X の前に置くことができる。\n")
-rule.insert(tk.END, "4. X は L, C の前に置くことができる。\n")
-rule.insert(tk.END, "5. C は D, M の前に置くことができる。\n")
+# ローマ数字のルールを左詰めで表示
+rule = tk.Label(root, text="1. I, X, C, M は3つまで並べることができる。\n"
+                            "\n"
+                            "2. V, L, D は1つ前の文字の右側にしか置くことができない。\n"
+                            "\n"
+                            "3. I は V, X の前に置くことができる。\n"
+                            "\n"
+                            "4. X は L, C の前に置くことができる。\n"
+                            "\n"
+                            "5. C は D, M の前に置くことができる。\n")
 rule.pack()
 
 # GUIの起動
