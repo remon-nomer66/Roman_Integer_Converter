@@ -45,7 +45,7 @@ def main(roman):
 # 「変換」ボタンをクリックしたときの動作
 def convert_roman_to_int():
     roman = entry.get()
-    roman = roman.replace(" ", "") # 入力から空白を除去
+    roman = roman.replace(" ", "").upper() # 入力から空白を除去し、大文字に変換
     try:
         num = main(roman)
         result_label["text"] = "結果: " + str(num)
