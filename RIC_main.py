@@ -49,14 +49,40 @@ def convert_roman_to_int():
     try:
         num = main(roman)
         result_label["text"] = "結果: " + str(num)
+        # 履歴に追加
+        add_to_history(roman, num)
     except Exception as e:
         messagebox.showerror("エラー", e)
+
+# 履歴に追加
+def add_to_history(roman, num):
+    global history  # global変数を使用することを明示
+    # 履歴に追加
+    history.insert(0, (roman, num))
+    # 履歴が3つ以上になったら、古い履歴を削除
+    history = history[:3]
+    # 履歴ラベルを更新
+    update_history_labels()
+
+# 履歴ラベルを更新
+def update_history_labels():
+    for i, label in enumerate(labels):
+        if i < len(history):
+            label["text"] = "履歴{}: {} → {}".format(i+1, history[i][0], history[i][1])
+        else:
+            label["text"] = "履歴{}: ".format(i+1)
 
 # GUIの生成
 root = tk.Tk()
 root.title("Roman Numeral → Integer Number")
 root.geometry("350x700")
 root.minsize(350, 700)
+
+# 履歴を格納するリスト
+history = []
+
+# 履歴ラベル
+labels = [tk.Label(root, text="履歴{}: ".format(i+1)) for i in range(3)]
 
 # ロゴラベル
 logo_label = tk.Label(root, text="ROMAN\nNUMERAL\nCONVERTER", 
@@ -87,6 +113,10 @@ result_label = tk.Label(root,
                         font=("Helvetica", 16, "bold"),
                         text="結果: ")
 result_label.pack()
+
+# 履歴表示ラベル
+for label in labels:
+    label.pack()
 
 #区分け
 separate_label = tk.Label(root, text="------------------------")
