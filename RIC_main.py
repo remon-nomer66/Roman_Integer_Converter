@@ -90,8 +90,8 @@ def update_history_labels():
 # GUIの生成
 root = tk.Tk()
 root.title("Roman Numeral → Integer Number")
-root.geometry("350x800")
-root.minsize(350, 800)
+root.geometry("400x950")
+root.minsize(400, 950)
 
 # 履歴を格納するリスト
 history = []
@@ -164,15 +164,18 @@ rule_label = tk.Label(root, text="ローマ数字のルール")
 rule_label.pack()
 
 # ローマ数字のルールを左詰めで表示
-rule = tk.Label(root, text="1. I, X, C, M は3つまで並べることができる。\n"
+rule = tk.Label(root, text= "1.基本的に数字は大きい順に並べる。\n"
+                            "小さい順で並べてもよいもの[IV,IX,XC,CD,CM]"
+                            "\n""\n"
+                            "2. I, X, C, M は3つまで並べることができる。\n"
                             "\n"
-                            "2. V, L, D は1つ前の文字の右側にしか置くことができない。\n"
+                            "3. V, L, D は,単体で置くか,1つ前の文字の右側に置くことができる。\n"
                             "\n"
-                            "3. I は V, X の前に置くことができる。\n"
+                            "4. I は V, X の前に置くことができる。\n"
                             "\n"
-                            "4. X は L, C の前に置くことができる。\n"
+                            "5. X は L, C の前に置くことができる。\n"
                             "\n"
-                            "5. C は D, M の前に置くことができる。\n")
+                            "6. C は D, M の前に置くことができる。\n")
 rule.pack()
 
 # GUIの起動
